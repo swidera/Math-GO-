@@ -1,0 +1,1 @@
+This is the initial README commit for the Math GO! repository.
