@@ -46,6 +46,11 @@ flutter:
   assets:     
     - assets/beastie1.png
     - assets/beastie2.png
+    - assets/angler-fish.png
+    - assets/bully-minion.png
+    - assets/eagle-emblem.png
+    - assets/plane-pilot.png
+    
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
