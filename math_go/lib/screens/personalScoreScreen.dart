@@ -21,7 +21,7 @@ class personalScoreScreen extends StatelessWidget {
                   onPressed: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MathGoApp())
+                      MaterialPageRoute(builder: (context) => MathGo())
                     );
                   },
                   child: Text(

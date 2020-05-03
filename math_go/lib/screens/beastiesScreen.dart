@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/homeScreen.dart';
 import '../widgets/mainMap.dart';
-
 
 class beastiesScreen extends StatelessWidget {
   @override
@@ -26,31 +24,31 @@ class beastiesScreen extends StatelessWidget {
       );
     beastieList[1] = Material(
       child: Image.asset(
-      'assets/beastie1.png',
+      'assets/bully-minion.png',
       height: 100,
       width: 100,
       )
     );
     beastieList[2] = Material(
-      child: Text('TealBeastie', style: beastieStyle, textAlign: TextAlign.center)
+      child: Text('Bullyman', style: beastieStyle, textAlign: TextAlign.center)
       );
     beastieList[3] = Material(
       child:
       Image.asset(
-      'assets/beastie2.png',
+      'assets/angler-fish.png',
       height: 100,
       width: 100,
       )
     );
     beastieList[4] =Material(
-      child: Text('YellowBeastie', style: beastieStyle, textAlign: TextAlign.center)
+      child: Text('Fishman', style: beastieStyle, textAlign: TextAlign.center)
       );
     beastieList[5] = Material(
       child: FlatButton(
                   onPressed: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MathGoApp())
+                      MaterialPageRoute(builder: (context) => MathGo())
                     );
                   },
                   child: Text(

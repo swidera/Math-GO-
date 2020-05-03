@@ -58,7 +58,7 @@ class _homeScreen extends  State<homeScreen> {
     if(pagePicked==1){
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MathGoApp())
+        MaterialPageRoute(builder: (context) => MathGo())
       );
     }
 

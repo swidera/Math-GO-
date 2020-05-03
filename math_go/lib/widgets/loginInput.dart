@@ -41,7 +41,7 @@ class _loginInput extends State<loginInput> {
             if(authenticateUser(_usernameInput, _pwInput)){
               Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MathGoApp())
+                      MaterialPageRoute(builder: (context) => MathGo())
                     );
             }
             else{
