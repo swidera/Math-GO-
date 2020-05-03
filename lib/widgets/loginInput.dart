@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/authenticate.dart';
 import '../screens/homeScreen.dart';
+import '../widgets/mainMap.dart';
 
 class loginInput extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _loginInput extends State<loginInput> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,7 +41,7 @@ class _loginInput extends State<loginInput> {
             if(authenticateUser(_usernameInput, _pwInput)){
               Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => homeScreen())
+                      MaterialPageRoute(builder: (context) => MathGoApp())
                     );
             }
             else{
