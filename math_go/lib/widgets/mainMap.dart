@@ -264,8 +264,6 @@ class _MathGoState extends State<MathGo> {
               // my map has completed being created;
               // i'm ready to show the pins on the map
 
-              print('test');
-
               showPinsOnMap();
           })
         ],
