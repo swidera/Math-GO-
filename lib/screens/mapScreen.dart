@@ -122,7 +122,7 @@ class _MathGoState extends State<MathGo> {
       icon: beastieTwo
     ));
 
-    var pinPositionThree = LatLng(currentLocation.latitude -0.002 , currentLocation.longitude - 0.004);
+    var pinPositionThree = LatLng(currentLocation.latitude -0.005 , currentLocation.longitude - 0.005);
 
     _markers.add(Marker(
       markerId: MarkerId('beastieThree') ,
