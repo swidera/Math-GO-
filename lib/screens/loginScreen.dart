@@ -6,6 +6,18 @@ import '../screens/newProfileScreen.dart';
 class loginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      color: Colors.deepOrangeAccent,
+      title: 'Login',
+      home: loginPage(),
+    );
+  }
+}
+
+class loginPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Material(
       color: Colors.deepOrangeAccent,
       child: Container(
