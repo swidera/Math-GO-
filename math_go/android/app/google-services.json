@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "445877073733",
+    "firebase_url": "https://math-go.firebaseio.com",
+    "project_id": "math-go",
+    "storage_bucket": "math-go.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445877073733:android:4a906bd7a3b3b3b7cb302c",
+        "android_client_info": {
+          "package_name": "com.example.math_go"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "445877073733-r8scuqgk9kctttq2017o7fuvg7p26uu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5n3AitccAhz3XNKULMRQhev8gZSiQb6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "445877073733-r8scuqgk9kctttq2017o7fuvg7p26uu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445877073733:android:43322fb4507f7979cb302c",
+        "android_client_info": {
+          "package_name": "com.example.mathgo_map"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "445877073733-r8scuqgk9kctttq2017o7fuvg7p26uu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5n3AitccAhz3XNKULMRQhev8gZSiQb6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "445877073733-r8scuqgk9kctttq2017o7fuvg7p26uu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
