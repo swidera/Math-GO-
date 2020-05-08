@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../models/authenticate.dart';
 import '../screens/homeScreen.dart';
@@ -35,10 +36,10 @@ class _loginInput extends State<loginInput> {
           'Password'
         ),
         FlatButton(
-          onPressed: (){
+          onPressed: ()async{
             _usernameInput = userNameController.text;
             _pwInput = pwController.text;
-            if(authenticateUser(_usernameInput, _pwInput)){
+            if(await authenticateUser(_usernameInput, _pwInput)){
               Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MathGo())
