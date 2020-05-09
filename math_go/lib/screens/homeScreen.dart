@@ -4,6 +4,7 @@ import '../screens/leaderboardScreen.dart';
 import '../screens/personalScoreScreen.dart';
 import '../screens/beastiesScreen.dart';
 import '../widgets/mainMap.dart';
+import '../models/getPersonalScore.dart';
 
 class homeScreen extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _homeScreen extends  State<homeScreen> {
     )
   ];
 
-  void changePage(int pagePicked) {
+  void changePage(int pagePicked) async{
 
     if(pagePicked==4){
       Navigator.push(
@@ -49,10 +50,15 @@ class _homeScreen extends  State<homeScreen> {
     }
 
     if(pagePicked==2){
+      String username = "user1"; 
+      String lifeTimeScore = await getPersonalScore(username);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => personalScoreScreen())
-      );
+        MaterialPageRoute(builder: (context) => personalScoreScreen(),
+          settings: RouteSettings(
+              arguments: lifeTimeScore,
+        )
+      ));
     }
 
     if(pagePicked==1){

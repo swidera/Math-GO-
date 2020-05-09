@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/loginScreen.dart';
+import '../models/createProfile.dart';
 
 class newProfile extends StatefulWidget {
   @override
@@ -44,12 +45,16 @@ class _newProfile extends State<newProfile> {
                   'Password'
                 ),
                 FlatButton(
-                  onPressed: (){
-                    _usernameInput = userNameController.text;
-                    _pwInput = pwController.text;
-                    _emailInput = emailController.text;
-                    //integrate with backend to check if username available
-                    //create user in backend
+                  onPressed: () async{
+                    //check if user exist
+                    String createStatus = await createUser(userNameController.text, pwController.text);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return  AlertDialog(
+                          title:  Text(createStatus)
+                        );}
+                    );
                   },
                   color: Colors.deepOrangeAccent,
                   child: Text(

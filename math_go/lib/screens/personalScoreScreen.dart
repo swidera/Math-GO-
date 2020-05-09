@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import '../screens/homeScreen.dart';
 import '../widgets/mainMap.dart';
+import '../models/getPersonalScore.dart';
 
 class personalScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
+    String lifetimeScore = ModalRoute.of(context).settings.arguments;
     List<Widget> scoreboardList = new List(2);
 
     TextStyle scoreStyle = TextStyle(
@@ -14,13 +15,13 @@ class personalScoreScreen extends StatelessWidget {
       height: 1.75,
     );
     scoreboardList[0] = Material(
-      child: Text('Lifetime Score: 7/10 - 70%', style: scoreStyle, textAlign: TextAlign.center)
+      child: Text("test", style: scoreStyle, textAlign: TextAlign.center)
     );
     scoreboardList[1] = Material(
       child: FlatButton(
                   onPressed: (){
                     Navigator.push(
-                      context,
+                      context, 
                       MaterialPageRoute(builder: (context) => MathGo())
                     );
                   },

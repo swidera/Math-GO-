@@ -10,7 +10,6 @@ Future<bool> authenticateUser (String user, String password) async{
   bool authenticated = false;
   final Firestore _mathGoStore = Firestore.instance;
   
-  var x;
   DocumentReference docRef = _mathGoStore.collection("users").document(user);
     await docRef.get().then((DocumentSnapshot datasnapshot) {
               if (datasnapshot.exists) {
