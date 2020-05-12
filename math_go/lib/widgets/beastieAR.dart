@@ -1,11 +1,15 @@
-import 'dart:io';
-import 'package:flutter/services.dart'
+//import 'dart:io';
 import 'package:arcore_plugin/arcore_plugin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
+//import 'dart:async';
+import 'mainMap.dart';
 
 class _BeastieArState extends State<BeastieAr> {
- 
+  //AR Variables
+  String recongizedImage;
+  ArCoreViewController arCoreViewController;
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -13,37 +17,17 @@ class _BeastieArState extends State<BeastieAr> {
       //app bar 
       appBar: AppBar(
         title: Text('AR Screen'),
-        backgroundColor: Colors.orange
+        backgroundColor: Colors.orange,
         centerTitle: true,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map),
-                title: Text('Home'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.child_care),
-                title: Text('Beasties'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.score),
-                title: Text('Score'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map),
-                title: Text('Leaderboard'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.system_update_alt),
-                title: Text('Logout'),
-              ),
-            ],
-            currentIndex: pageIndex,
-            selectedItemColor: Colors.deepOrangeAccent,
-            onTap: changePage,
+        leading: new IconButton ( 
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push( 
+              context,
+              MaterialPageRoute(builder: (context) => MathGo())
+            );
+          },
+        ),
       ),
       body: Center(
           child: ArCoreView(
@@ -58,7 +42,6 @@ class _BeastieArState extends State<BeastieAr> {
           onImageRecognized: _onImageRecognized,
           onArCoreViewCreated: _onTextViewCreated,
         )));
-    );
   }
 
   void _onTextViewCreated(ArCoreViewController controller) {

@@ -11,6 +11,7 @@ import '../screens/personalScoreScreen.dart';
 import '../screens/beastiesScreen.dart';
 import '../models/getPersonalScore.dart';
 import '../models/getLeaderboard.dart';
+import 'beastieAR.dart';
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 60;
@@ -106,7 +107,7 @@ class _MathGoState extends State<MathGo> {
     _markers.add(Marker(
       markerId: MarkerId('sourcePin') ,
       position: pinPosition,
-      icon: sourceIcon
+      icon: sourceIcon,
     ));
     //Beastie markers
     var pinPositionOne = LatLng(currentLocation.latitude + 0.005 , currentLocation.longitude + 0.005);
@@ -272,7 +273,22 @@ class _MathGoState extends State<MathGo> {
               // i'm ready to show the pins on the map
 
               showPinsOnMap();
-          })
+          }),
+          Align (
+            alignment: Alignment.bottomCenter,
+            child: RaisedButton( 
+              onPressed: () { 
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BeastieAr()),
+                );
+              },
+              color: Colors.blue,
+              textColor: Colors.white,
+              elevation: 5,
+              child: const Text('AR Screen!'),
+            ),
+          ),
         ],
       ),
     );
