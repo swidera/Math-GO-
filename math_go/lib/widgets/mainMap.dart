@@ -3,11 +3,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:location/location.dart';
+import 'package:math_go/models/getLeaderboard.dart';
 import 'dart:async';
 import '../screens/loginScreen.dart';
 import '../screens/leaderboardScreen.dart';
 import '../screens/personalScoreScreen.dart';
 import '../screens/beastiesScreen.dart';
+import '../models/getPersonalScore.dart';
+import '../models/getLeaderboard.dart';
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 60;
@@ -160,7 +163,7 @@ class _MathGoState extends State<MathGo> {
       
   }
 
-   void changePage(int pagePicked) {
+   void changePage(int pagePicked) async{
 
      if(pagePicked==4){
        Navigator.push(
@@ -170,16 +173,20 @@ class _MathGoState extends State<MathGo> {
      }
 
      if(pagePicked==3){
+      List<leaderInfo> leaderboard = await getLeaderboard();
       Navigator.push(
          context,
-       MaterialPageRoute(builder: (context) => leaderboardScreen())
+       MaterialPageRoute(builder: (context) => leaderboardScreen(leaderboard))
        );
    }
 
      if(pagePicked==2){
-       Navigator.push(
-         context,
-         MaterialPageRoute(builder: (context) => personalScoreScreen())
+      String username = "user1";
+      String lifeTimeScore = await getPersonalScore(username);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => personalScoreScreen(lifeTimeScore)
+        )
       );
      }
 

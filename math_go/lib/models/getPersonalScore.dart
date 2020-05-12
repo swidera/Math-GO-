@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import '../screens/newProfileScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<String> getPersonalScore (String username) async{
   final Firestore _mathGoStore = Firestore.instance;
   
-  String lifetimeScore="Failure";
+  String lifetimeScore="Data Retrieval Failure";
 
   DocumentReference docRef = _mathGoStore.collection("users").document(username);
   await docRef.get().then((DocumentSnapshot datasnapshot) {

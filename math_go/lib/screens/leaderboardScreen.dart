@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import '../screens/homeScreen.dart';
 import '../widgets/mainMap.dart';
+import '../models/getLeaderboard.dart';
 
 class leaderboardScreen extends StatelessWidget {
+leaderboardScreen(this.leaderboard);
+
+final List<leaderInfo> leaderboard;
   @override
   Widget build(BuildContext context) {
 
@@ -14,25 +18,13 @@ class leaderboardScreen extends StatelessWidget {
       height: 1.75,
     );
 
+    for (int i=0; i<leaderboard.length; i++){
+        leaderboardList[0] = Material(
+          child: Text(leaderboard[i].username+" : "+leaderboard[i].amountCaptured.toString()+" Beasties", style: leaderStyle, textAlign: TextAlign.center)
+        );
+    }
 
-    
-    leaderboardList[0] = Material(
-      child: Text('defaultuser: 750 Beasties', style: leaderStyle, textAlign: TextAlign.center)
-    );
-      
-    leaderboardList[1] = Material(
-      child: Text('jdoe1: 551 Beasties', style: leaderStyle, textAlign: TextAlign.center)
-    );
-    leaderboardList[2] = Material(
-      child: Text('beastie27: 467 Beasties', style: leaderStyle, textAlign: TextAlign.center)
-    );
-    leaderboardList[3] = Material(
-      child: Text('jim5: 452 Beasties', style: leaderStyle, textAlign: TextAlign.center)
-    );
-    leaderboardList[4] = Material(
-      child: Text('timmy: 398 Beasties', style: leaderStyle, textAlign: TextAlign.center)
-    );
-    leaderboardList[5] = Material(
+    leaderboardList.add(Material(
       child: FlatButton(
                   onPressed: (){
                     Navigator.push(
@@ -48,7 +40,7 @@ class leaderboardScreen extends StatelessWidget {
                     )
                   ),
                 )
-    );
+    ));
 
     return Container(
       color: Colors.deepOrangeAccent,
