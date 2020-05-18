@@ -17,7 +17,9 @@ Future<String> createUser (String username, String pw) async{
                   .document(username)
                   .setData({
                     'username': username,
-                    'password': pw
+                    'password': pw,
+                    'questionAttempt': 0,
+                    'questionCorrect': 0
                   });
                 createStatus="The user has been created";
               }
