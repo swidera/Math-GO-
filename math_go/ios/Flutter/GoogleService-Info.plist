@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>445877073733-91ktohuv0d983n14p4bth8amjkkju4q8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.445877073733-91ktohuv0d983n14p4bth8amjkkju4q8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC6cQfRbnGJqlhkTP94f0E1AzI5xF1AJ0k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>445877073733</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.mathGo</string>
+	<key>PROJECT_ID</key>
+	<string>math-go</string>
+	<key>STORAGE_BUCKET</key>
+	<string>math-go.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:445877073733:ios:8cb105fb51e98296cb302c</string>
+	<key>DATABASE_URL</key>
+	<string>https://math-go.firebaseio.com</string>
+</dict>
+</plist>
