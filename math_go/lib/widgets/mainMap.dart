@@ -12,6 +12,7 @@ import '../screens/beastiesScreen.dart';
 import '../models/getPersonalScore.dart';
 import '../models/getLeaderboard.dart';
 import 'beastieAR.dart';
+import '../models/getBeasties.dart';
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 60;
@@ -192,9 +193,11 @@ class _MathGoState extends State<MathGo> {
      }
 
      if(pagePicked==1){
+       String username = "user1";
+       List<beastieInfo> myBeasties = await getUsersBeasties(username);
        Navigator.push(
          context,
-        MaterialPageRoute(builder: (context) => beastiesScreen())
+        MaterialPageRoute(builder: (context) => beastiesScreen(myBeasties))
        );
      }
 

@@ -17,11 +17,13 @@ Future<List<leaderInfo>> getLeaderboard () async{
                     leaders.add(new leaderInfo(datasnapshot.documents[i].documentID,datasnapshot.documents[i].data['questionCorrect']));
                   }
               });
-
-  leaders.sort((a, b) => a.amountCaptured.compareTo(b.amountCaptured));
+ 
+  leaders.sort((b, a) => a.amountCaptured.compareTo(b.amountCaptured));
+ 
   if(leaders.length>5){
     leaders.removeRange(5, leaders.length);
   }
+  
 
   return leaders;
 }
