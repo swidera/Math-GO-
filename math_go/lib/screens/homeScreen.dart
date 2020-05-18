@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_go/models/getLeaderboard.dart';
 import '../screens/loginScreen.dart';
 import '../screens/leaderboardScreen.dart';
 import '../screens/personalScoreScreen.dart';
@@ -43,9 +44,10 @@ class _homeScreen extends  State<homeScreen> {
     }
 
     if(pagePicked==3){
+      List<leaderInfo> leaderboard = await getLeaderboard();
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => leaderboardScreen())
+        MaterialPageRoute(builder: (context) => leaderboardScreen(leaderboard))
       );
     }
 
@@ -54,7 +56,7 @@ class _homeScreen extends  State<homeScreen> {
       String lifeTimeScore = await getPersonalScore(username);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => personalScoreScreen(),
+        MaterialPageRoute(builder: (context) => personalScoreScreen(lifeTimeScore),
           settings: RouteSettings(
               arguments: lifeTimeScore,
         )
