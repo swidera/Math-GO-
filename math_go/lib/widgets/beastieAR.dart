@@ -1,61 +1,6 @@
-//import 'dart:io';
-import 'package:arcore_plugin/arcore_plugin.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
-//import 'dart:async';
-import 'mainMap.dart';
+import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 
-class _BeastieArState extends State<BeastieAr> {
-  //AR Variables
-  String recongizedImage;
-  ArCoreViewController arCoreViewController;
-
-  @override
-  Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      //app bar 
-      appBar: AppBar(
-        title: Text('AR Screen'),
-        backgroundColor: Colors.orange,
-        centerTitle: true,
-        leading: new IconButton ( 
-          icon: new Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push( 
-              context,
-              MaterialPageRoute(builder: (context) => MathGo())
-            );
-          },
-        ),
-      ),
-      body: Center(
-          child: ArCoreView(
-          focusBox: Container(
-            width: screenSize.width * 0.5,
-            height: screenSize.width * 0.5,
-            decoration: BoxDecoration(
-                border: Border.all(width: 1, style: BorderStyle.solid)),
-          ),
-          width: screenSize.width,
-          height: screenSize.height,
-          onImageRecognized: _onImageRecognized,
-          onArCoreViewCreated: _onTextViewCreated,
-        )));
-  }
-
-  void _onTextViewCreated(ArCoreViewController controller) {
-    arCoreViewController = controller;
-    controller.getArCoreView();
-  }
-
-  void _onImageRecognized(String recImgName) {
-    print("image recongized: $recImgName");
-
-    // you can pause the image recognition via arCoreViewController.pauseImageRecognition();
-    // resume it via arCoreViewController.resumeImageRecognition();
-  }
-}
 
 class BeastieAr extends StatefulWidget {
   final String title;
@@ -64,3 +9,39 @@ class BeastieAr extends StatefulWidget {
 
   State createState() => _BeastieArState();
 }
+
+class _BeastieArState extends State<BeastieAr> {
+  //AR Variables
+  ArCoreController arCoreController;
+
+  @override
+  Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+          title: const Text('test'),
+        ),
+        body: ArCoreView(
+          onArCoreViewCreated: _onArCoreViewCreated,
+          enableTapRecognizer: true,
+        ),
+      );
+  }
+
+  void _onArCoreViewCreated(ArCoreController controller) {
+    arCoreController = controller;
+    arCoreController.onNodeTap = (name) => onTapHandler(name);
+  }
+
+  void onTapHandler(String name) {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) =>
+          AlertDialog(content: Text('onNodeTap on $name')),
+    );
+  }
+}
+
+//FIX ME:
+//Below is potential fix to sigterm exit
+//https://stackoverflow.com/questions/61167711/sample-flutter-ar-project-app-crashes-unable-to-start-activity-componentinfo
