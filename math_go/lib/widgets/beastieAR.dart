@@ -1,6 +1,12 @@
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
+import 'dart:io';
+import 'dart:convert';
+import 'dart:async';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:typed_data';
+//import 'package:image/image.dart';
 
 class BeastieAr extends StatefulWidget {
   @override
@@ -24,6 +30,7 @@ class _BeastieArState extends State<BeastieAr> {
     );
   }
 
+
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
 
@@ -32,10 +39,13 @@ class _BeastieArState extends State<BeastieAr> {
     _addCube(arCoreController);
   }
 
-  void _addSphere(ArCoreController controller) {
+  Future _addSphere(ArCoreController controller) async {
+
+    final ByteData textureBytes = await rootBundle.load('assets/angler-fish.png');
+
     final material = ArCoreMaterial(
         color: Color.fromARGB(120, 66, 134, 244), 
-        //texture: "plane-piloe.png"
+        textureBytes: textureBytes.buffer.asUint8List()
     );
     final sphere = ArCoreSphere(
       materials: [material],
@@ -44,9 +54,6 @@ class _BeastieArState extends State<BeastieAr> {
     final node = ArCoreNode(
       shape: sphere,
       position: vector.Vector3(0, 0, -1.5),
-      // children: [
-      //   new Image.asset('assets/plane-pilot.png'),
-      // ]
     );
     controller.addArCoreNode(node);
   }
@@ -68,10 +75,13 @@ class _BeastieArState extends State<BeastieAr> {
     controller.addArCoreNode(node);
   }
 
-  void _addCube(ArCoreController controller) {
+  Future _addCube(ArCoreController controller) async {
+    final ByteData textureBytes = await rootBundle.load('assets/angler-fish.png');
+
     final material = ArCoreMaterial(
       color: Color.fromARGB(120, 66, 134, 244),
       metallic: 1.0,
+      textureBytes: textureBytes.buffer.asUint8List()
     );
     final cube = ArCoreCube(
       materials: [material],
