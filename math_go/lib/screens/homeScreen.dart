@@ -35,7 +35,7 @@ class _homeScreen extends  State<homeScreen> {
   ];
 
   void changePage(int pagePicked) async{
-
+    /*
     if(pagePicked==4){
       Navigator.push(
         context,
@@ -69,7 +69,7 @@ class _homeScreen extends  State<homeScreen> {
         MaterialPageRoute(builder: (context) => MathGo())
       );
     }
-
+    */
     setState(() {
       pageIndex = pagePicked;
     });

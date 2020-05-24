@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import '../widgets/mainMap.dart';
 
 class personalScoreScreen extends StatelessWidget {
-  personalScoreScreen(this.lifetimeScore);
-
+  
   final String lifetimeScore;
+  final String loggedInUser;
+  personalScoreScreen(this.lifetimeScore, this.loggedInUser);
   @override
   Widget build(BuildContext context) {
     List<Widget> scoreboardList = new List(2);
@@ -22,7 +23,7 @@ class personalScoreScreen extends StatelessWidget {
                   onPressed: (){
                     Navigator.push(
                       context, 
-                      MaterialPageRoute(builder: (context) => MathGo())
+                      MaterialPageRoute(builder: (context) => MathGo(loggedInUser))
                     );
                   },
                   child: Text(

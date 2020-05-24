@@ -31,6 +31,10 @@ Future<List<beastieInfo>> getUsersBeasties (String username) async{
     });
 
   }
+
+  if(myBeasties.length==0){
+    myBeasties.add(new beastieInfo("You have not caught any Beasties yet!","","",0));
+  }
   
   return myBeasties;
 }
