@@ -5,7 +5,8 @@ import '../widgets/mainMap.dart';
 class beastiesScreen extends StatelessWidget {
 
   final List<beastieInfo> myBeasties;
-  beastiesScreen(this.myBeasties);
+  final String loggedInUser;
+  beastiesScreen(this.myBeasties, this.loggedInUser);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class beastiesScreen extends StatelessWidget {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MathGo(title: 'Map Screen'))
+                            MaterialPageRoute(builder: (context) => MathGo(loggedInUser))
                           );
                         },
                         child: Text(

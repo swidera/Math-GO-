@@ -116,13 +116,7 @@ class _MathGoState extends State<MathGo> {
     _markers.add(Marker(
       markerId: MarkerId('beastieOne') ,
       position: pinPositionOne,
-      icon: beastieOne,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BeastieAr(title: 'Ar Screen', beastieName: 'assets/eagle-emblem.png')),
-        );
-      }
+      icon: beastieOne
     ));
 
     var pinPositionTwo = LatLng(currentLocation.latitude + 0.01 , currentLocation.longitude + 0.01);
@@ -130,13 +124,7 @@ class _MathGoState extends State<MathGo> {
     _markers.add(Marker(
       markerId: MarkerId('beastieTwo') ,
       position: pinPositionTwo,
-      icon: beastieTwo,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BeastieAr(title: 'Ar Screen', beastieName: 'assets/angler-fish.png')),
-        );
-      }
+      icon: beastieTwo
     ));
 
     var pinPositionThree = LatLng(currentLocation.latitude -0.005 , currentLocation.longitude - 0.005);
@@ -144,14 +132,7 @@ class _MathGoState extends State<MathGo> {
     _markers.add(Marker(
       markerId: MarkerId('beastieThree') ,
       position: pinPositionThree,
-      icon: beastieThree,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BeastieAr(title: 'Ar Screen', beastieName: 'assets/bully-minion.png')),
-        );
-        _markers.removeWhere((m) => m.markerId.value == 'beastieThree');
-      }
+      icon: beastieThree
     ));
 
     setState(() {});
@@ -197,26 +178,24 @@ class _MathGoState extends State<MathGo> {
       List<leaderInfo> leaderboard = await getLeaderboard();
       Navigator.push(
          context,
-       MaterialPageRoute(builder: (context) => leaderboardScreen(leaderboard))
+       MaterialPageRoute(builder: (context) => leaderboardScreen(leaderboard, widget.loggedInUser))
        );
    }
 
      if(pagePicked==2){
-      String username = "user1";
-      String lifeTimeScore = await getPersonalScore(username);
+      String lifeTimeScore = await getPersonalScore(widget.loggedInUser);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => personalScoreScreen(lifeTimeScore)
+        MaterialPageRoute(builder: (context) => personalScoreScreen(lifeTimeScore, widget.loggedInUser)
         )
       );
      }
 
      if(pagePicked==1){
-       String username = "user1";
-       List<beastieInfo> myBeasties = await getUsersBeasties(username);
+       List<beastieInfo> myBeasties = await getUsersBeasties(widget.loggedInUser);
        Navigator.push(
          context,
-        MaterialPageRoute(builder: (context) => beastiesScreen(myBeasties))
+        MaterialPageRoute(builder: (context) => beastiesScreen(myBeasties, widget.loggedInUser))
        );
      }
 
@@ -247,7 +226,7 @@ class _MathGoState extends State<MathGo> {
     return Scaffold(
       //app bar 
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Math GO! Map Screen'),
         backgroundColor: Colors.blue
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -318,9 +297,8 @@ class _MathGoState extends State<MathGo> {
 }
 
 class MathGo extends StatefulWidget {
-  final String title;
-
-  const MathGo({Key key, this.title}) : super(key: key);
+  final String loggedInUser;
+  const MathGo(this.loggedInUser);
 
   State createState() => _MathGoState();
 }

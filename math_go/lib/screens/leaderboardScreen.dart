@@ -6,7 +6,8 @@ import '../models/getLeaderboard.dart';
 class leaderboardScreen extends StatelessWidget {
 
   final List<leaderInfo> leaderboard;
-  leaderboardScreen(this.leaderboard);
+  final String loggedInUser;
+  leaderboardScreen(this.leaderboard, this.loggedInUser);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class leaderboardScreen extends StatelessWidget {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MathGo())
+                            MaterialPageRoute(builder: (context) => MathGo(loggedInUser))
                           );
                         },
                         child: Text(

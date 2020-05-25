@@ -40,7 +40,7 @@ class _loginInput extends State<loginInput> {
             if(await authenticateUser(_usernameInput, _pwInput)){
               Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MathGo(title: 'Map Screen'))
+                      MaterialPageRoute(builder: (context) => MathGo(_usernameInput))
                     );
             }
             else{
