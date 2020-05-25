@@ -35,7 +35,7 @@ class beastiesScreen extends StatelessWidget {
                         onPressed: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MathGo())
+                            MaterialPageRoute(builder: (context) => MathGo(title: 'Map Screen'))
                           );
                         },
                         child: Text(
