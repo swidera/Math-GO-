@@ -24,6 +24,7 @@ class BeastieAr extends StatefulWidget {
 
 class _BeastieArState extends State<BeastieAr> {
   ArCoreController arCoreController;
+  String loggedInUser ='';
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class _BeastieArState extends State<BeastieAr> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MathGo(title: 'Map Screen')),
+                MaterialPageRoute(builder: (context) => MathGo(loggedInUser)),
               );
             },
           ),

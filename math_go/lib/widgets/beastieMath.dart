@@ -27,6 +27,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
   var _beastieID = '';
   var _userAnswer = 0;
   var problem = '';
+  String loggedInUser = '';
 
   // final Firestore _mathGoStore = Firestore.instance;
   
@@ -77,7 +78,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                   if(await authenticateMathProb(_beastieID, _userAnswer)){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MathGo(title: 'Map Screen'))
+                      MaterialPageRoute(builder: (context) => MathGo(loggedInUser))
                     );
                   }
                   else{
