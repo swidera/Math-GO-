@@ -34,48 +34,10 @@ class _BeastieArState extends State<BeastieAr> {
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
 
-    _addSphere(arCoreController);
-    _addCylindre(arCoreController);
-    _addCube(arCoreController);
+    _addBeastie(arCoreController);
   }
 
-  Future _addSphere(ArCoreController controller) async {
-
-    final ByteData textureBytes = await rootBundle.load('assets/angler-fish.png');
-
-    final material = ArCoreMaterial(
-        color: Color.fromARGB(120, 66, 134, 244), 
-        textureBytes: textureBytes.buffer.asUint8List()
-    );
-    final sphere = ArCoreSphere(
-      materials: [material],
-      radius: 0.1,
-    );
-    final node = ArCoreNode(
-      shape: sphere,
-      position: vector.Vector3(0, 0, -1.5),
-    );
-    controller.addArCoreNode(node);
-  }
-
-  void _addCylindre(ArCoreController controller) {
-    final material = ArCoreMaterial(
-      color: Colors.red,
-      reflectance: 1.0,
-    );
-    final cylindre = ArCoreCylinder(
-      materials: [material],
-      radius: 0.5,
-      height: 0.3,
-    );
-    final node = ArCoreNode(
-      shape: cylindre,
-      position: vector.Vector3(0.0, -0.5, -2.0),
-    );
-    controller.addArCoreNode(node);
-  }
-
-  Future _addCube(ArCoreController controller) async {
+  Future _addBeastie(ArCoreController controller) async {
     final ByteData textureBytes = await rootBundle.load('assets/angler-fish.png');
 
     final material = ArCoreMaterial(
