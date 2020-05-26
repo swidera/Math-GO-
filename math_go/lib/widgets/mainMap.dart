@@ -116,7 +116,13 @@ class _MathGoState extends State<MathGo> {
     _markers.add(Marker(
       markerId: MarkerId('beastieOne') ,
       position: pinPositionOne,
-      icon: beastieOne
+      icon: beastieOne,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BeastieAr(title: 'AR Screen', beastieName: 'assets/eagle-emblem.png',)),
+          );
+      }
     ));
 
     var pinPositionTwo = LatLng(currentLocation.latitude + 0.01 , currentLocation.longitude + 0.01);
@@ -124,7 +130,13 @@ class _MathGoState extends State<MathGo> {
     _markers.add(Marker(
       markerId: MarkerId('beastieTwo') ,
       position: pinPositionTwo,
-      icon: beastieTwo
+      icon: beastieTwo,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BeastieAr(title: 'AR Screen', beastieName: 'assets/angler-fish.png',)),
+          );
+      }     
     ));
 
     var pinPositionThree = LatLng(currentLocation.latitude -0.005 , currentLocation.longitude - 0.005);
@@ -132,7 +144,13 @@ class _MathGoState extends State<MathGo> {
     _markers.add(Marker(
       markerId: MarkerId('beastieThree') ,
       position: pinPositionThree,
-      icon: beastieThree
+      icon: beastieThree,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BeastieAr(title: 'AR Screen', beastieName: 'assets/bully-minion.png',)),
+          );
+      }
     ));
 
     setState(() {});
