@@ -42,7 +42,18 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Math Problem')),
+      appBar: AppBar(
+        title: Text('Math Problem'),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MathGo(loggedInUser)),
+            );
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Form(
