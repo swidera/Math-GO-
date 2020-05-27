@@ -12,6 +12,7 @@ import '../widgets/mainMap.dart';
 class BeastieMathProb extends StatefulWidget{
   final String title;
   final String beastieID;
+  //TO DO: set beastie math constructor to take in beastie object and user log in
   const BeastieMathProb({Key key, this.title, this.beastieID}) : super(key: key);
 
 
@@ -23,21 +24,11 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
   final formKey = GlobalKey<FormState>();
   File image;
   var entryCount = 0;
-  var answer = 0;
+  var answer = 0.0;
   var _beastieID = '';
-  var _userAnswer = 0;
+  var _userAnswer = 0.0;
   var problem = '';
   String loggedInUser = '';
-
-  // final Firestore _mathGoStore = Firestore.instance;
-  
-  // DocumentReference docRef = _mathGoStore.collection("beasties").document(widget.beastieID);
-  // await docRef.get().then((DocumentSnapshot datasnapshot) {
-  //   if (datasnapshot.exists) {
-  //       problem = datasnapshot.data['question'].toString()
-  //   }
-  // });
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +59,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                 ),
                 onSaved: (value) {
                   //store value in some object
-                  answer = int.parse(value);
+                  answer = double.parse(value);
                 },
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],

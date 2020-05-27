@@ -68,6 +68,10 @@ class _MathGoState extends State<MathGo> {
         updatePinOnMap();
     });
 
+    //TO DO: variable for list of beasties
+
+    //TO DO: populate list of beasties to spawn
+
     setIcons();
 
     setInitialLocation();
@@ -77,6 +81,7 @@ class _MathGoState extends State<MathGo> {
   //Free use icons come from https://game-icons.net/
   //Setting up icon for player
   void setIcons() async {
+    //TO DO: go through list and set up each icon
     sourceIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
         'assets/plane-pilot.png');
@@ -111,6 +116,8 @@ class _MathGoState extends State<MathGo> {
       icon: sourceIcon,
     ));
     //Beastie markers
+
+    //TO DO: go through list and add each marker
     var pinPositionOne = LatLng(currentLocation.latitude + 0.005 , currentLocation.longitude + 0.005);
 
     _markers.add(Marker(

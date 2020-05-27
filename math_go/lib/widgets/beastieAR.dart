@@ -11,12 +11,16 @@ import 'dart:typed_data';
 //import 'package:image/image.dart';
 import '../widgets/mainMap.dart';
 import '../widgets/beastieMath.dart';
+import '../models/getBeasties.dart';
 
 class BeastieAr extends StatefulWidget {
   @override
   final String title;
+  //final beastieInfo beastieName;
+  //final String loggedInUser;
   final String beastieName;
 
+  //TO DO: set constructor to take beastieInfo object and logged in user string
   const BeastieAr({Key key, this.title, this.beastieName}) : super(key: key);
 
   _BeastieArState createState() => _BeastieArState();
@@ -53,11 +57,13 @@ class _BeastieArState extends State<BeastieAr> {
 
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
+    //TO DO: Set beastie constructor to pass Beastie Object and logged in User name
     arCoreController.onNodeTap = (name) => onTapHandler(widget.beastieName);
     _addBeastie(arCoreController);
   }
 
   Future _addBeastie(ArCoreController controller) async {
+    //TO DO: Set widget to load beastie.image url instead of passed in beastiename
     final ByteData textureBytes = await rootBundle.load(widget.beastieName);
 
     final material = ArCoreMaterial(
@@ -79,6 +85,7 @@ class _BeastieArState extends State<BeastieAr> {
   void onTapHandler(String name) {
     Navigator.push(
       context,
+      //TO DO: set beastie math constructor to take in beastie info object and logged in user
       MaterialPageRoute(builder: (context) => BeastieMathProb(title: 'Math Problem Screen', beastieID: '0KWJpU5owfk1nMrw4ucd'))
     );
   }
