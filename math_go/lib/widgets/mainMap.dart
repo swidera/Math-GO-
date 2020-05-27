@@ -13,6 +13,7 @@ import '../models/getPersonalScore.dart';
 import '../models/getLeaderboard.dart';
 import 'beastieAR.dart';
 import '../models/getBeasties.dart';
+import '../models/populateRandomBeasties.dart';
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 60;
@@ -58,6 +59,8 @@ class _MathGoState extends State<MathGo> {
   BitmapDescriptor beastieTwo;
   BitmapDescriptor beastieThree;
 
+  List<beastieInfo> beastiesToSpawn = new List<beastieInfo>();
+
   void initState() {
     super.initState();
 
@@ -70,7 +73,7 @@ class _MathGoState extends State<MathGo> {
 
     //TO DO: variable for list of beasties
 
-    //TO DO: populate list of beasties to spawn
+    populateRandomBeasties(beastiesToSpawn);
 
     setIcons();
 

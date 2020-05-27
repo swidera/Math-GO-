@@ -18,10 +18,17 @@ Future<List<beastieInfo>> getUsersBeasties (String username) async{
   CollectionReference collRef = _mathGoStore.collection("users").document(username).collection("myBeasties");
   await collRef.getDocuments().then((QuerySnapshot datasnapshot) {
               for(int i=0; i<datasnapshot.documents.length; i++){
-                beastieIds.add(datasnapshot.documents[i].documentID.toString());
+                //beastieIds.add(datasnapshot.documents[i].documentID.toString());
+                myBeasties.add(new beastieInfo(
+                datasnapshot.documents[i].data['name'],
+                "",
+                "",
+                0     
+                ));
+                
               }
   });
-
+/*
   for(int j=0; j<beastieIds.length; j++){
     DocumentReference docRef = _mathGoStore.collection("beasties").document(beastieIds[j]);
     await docRef.get().then((DocumentSnapshot datasnapshot) {
@@ -31,7 +38,7 @@ Future<List<beastieInfo>> getUsersBeasties (String username) async{
     });
 
   }
-
+*/
   if(myBeasties.length==0){
     myBeasties.add(new beastieInfo("You have not caught any Beasties yet!","","",0));
   }
