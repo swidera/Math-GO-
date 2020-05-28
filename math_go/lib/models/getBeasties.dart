@@ -5,8 +5,9 @@ class beastieInfo {
   final String difficulty;
   final String question;
   final double answer;
+  final String imageUrl;
 
-  beastieInfo(this.name,this.difficulty,this.question,this.answer);
+  beastieInfo(this.name,this.difficulty,this.question,this.answer, this.imageUrl);
 }
 
 Future<List<beastieInfo>> getUsersBeasties (String username) async{
@@ -23,7 +24,8 @@ Future<List<beastieInfo>> getUsersBeasties (String username) async{
                 datasnapshot.documents[i].data['name'],
                 "",
                 "",
-                0     
+                0,
+                ""     
                 ));
                 
               }
@@ -40,7 +42,7 @@ Future<List<beastieInfo>> getUsersBeasties (String username) async{
   }
 */
   if(myBeasties.length==0){
-    myBeasties.add(new beastieInfo("You have not caught any Beasties yet!","","",0));
+    myBeasties.add(new beastieInfo("You have not caught any Beasties yet!","","",0,""));
   }
   
   return myBeasties;

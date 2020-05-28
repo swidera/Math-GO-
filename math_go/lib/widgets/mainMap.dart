@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
+//import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:location/location.dart';
 import 'package:math_go/models/getLeaderboard.dart';
 import 'dart:async';
@@ -14,6 +14,7 @@ import '../models/getLeaderboard.dart';
 import 'beastieAR.dart';
 import '../models/getBeasties.dart';
 import '../models/populateRandomBeasties.dart';
+import 'dart:math';
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 60;
@@ -54,12 +55,15 @@ class _MathGoState extends State<MathGo> {
   Location location;
   Set<Marker> _markers = Set<Marker>();
   Completer<GoogleMapController> _controller = Completer();
-  BitmapDescriptor sourceIcon;
-  BitmapDescriptor beastieOne;
-  BitmapDescriptor beastieTwo;
-  BitmapDescriptor beastieThree;
 
+  //BitMap Variables
+  BitmapDescriptor sourceIcon;
+  List<BitmapDescriptor> beastieBitMap = new List<BitmapDescriptor>();
+
+  //Beastie Variables
+  var beastieCount = 0;
   List<beastieInfo> beastiesToSpawn = new List<beastieInfo>();
+  List<beastieInfo> testBeastiesToSpawn = new List<beastieInfo>();
 
   void initState() {
     super.initState();
@@ -75,32 +79,27 @@ class _MathGoState extends State<MathGo> {
 
     populateRandomBeasties(beastiesToSpawn);
 
-    setIcons();
+    testBeastiesToSpawn.add(new beastieInfo("Eagle", "easy", "2 + 2", 4.0, '/assets/eagle-emblem.png'));
 
+    setIcons(testBeastiesToSpawn);
+    
     setInitialLocation();
-
   }
 
   //Free use icons come from https://game-icons.net/
   //Setting up icon for player
-  void setIcons() async {
+  Future<void> setIcons(List<beastieInfo> beastiesList) async {
     //TO DO: go through list and set up each icon
+    Size imageSize = new Size(100, 100);
     sourceIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
+      ImageConfiguration(devicePixelRatio: 2.5, size: imageSize),
         'assets/plane-pilot.png');
 
-    //setting up icons for temp beasties
-    beastieOne = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/eagle-emblem.png');
-
-    beastieTwo = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/angler-fish.png');
-
-    beastieThree = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/bully-minion.png');
+    for(var i = 0; i < beastiesList.length; i++) {
+      beastieBitMap[i] = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5, size: imageSize),
+          beastiesList[i].imageUrl.toString());
+    }
   }
 
   //setting initial location
@@ -109,7 +108,7 @@ class _MathGoState extends State<MathGo> {
   }
 
   //function to show markers on google maps of beasties and player
-  void showPinsOnMap() {
+  void showPinsOnMap(List<BitmapDescriptor> beastieBitMap, List<beastieInfo> beastiesList) {
     var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
 
     //Player marker
@@ -121,48 +120,36 @@ class _MathGoState extends State<MathGo> {
     //Beastie markers
 
     //TO DO: go through list and add each marker
-    var pinPositionOne = LatLng(currentLocation.latitude + 0.005 , currentLocation.longitude + 0.005);
+    for(var i = 0; i < beastieBitMap.length; i++) {
+      var randX = new Random();
+      var randY = new Random();
 
-    _markers.add(Marker(
-      markerId: MarkerId('beastieOne') ,
-      position: pinPositionOne,
-      icon: beastieOne,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BeastieAr(title: 'AR Screen', beastieName: 'assets/eagle-emblem.png',)),
+      var randLat = 0.0;
+      var randLong = 0.0;
+
+      randLat = (randX.nextInt(5) + 1)*0.001;
+      randLong = (randY.nextInt(5) + 1) *0.001;
+
+      var randPosition = LatLng(currentLocation.latitude + randLat, currentLocation.longitude + randLong);
+
+      print('LAT LONG DATA BELOW:');
+      print(randLat);
+      print(randLong);
+      //print(beastieBitMap[i].toString());
+
+      _markers.add(Marker(
+        markerId: MarkerId(i.toString()),
+        position: randPosition,
+        icon: beastieBitMap[i],
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BeastieAr(beastie: beastiesList[i])),
           );
-      }
-    ));
-
-    var pinPositionTwo = LatLng(currentLocation.latitude + 0.01 , currentLocation.longitude + 0.01);
-
-    _markers.add(Marker(
-      markerId: MarkerId('beastieTwo') ,
-      position: pinPositionTwo,
-      icon: beastieTwo,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BeastieAr(title: 'AR Screen', beastieName: 'assets/angler-fish.png',)),
-          );
-      }     
-    ));
-
-    var pinPositionThree = LatLng(currentLocation.latitude -0.005 , currentLocation.longitude - 0.005);
-
-    _markers.add(Marker(
-      markerId: MarkerId('beastieThree') ,
-      position: pinPositionThree,
-      icon: beastieThree,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BeastieAr(title: 'AR Screen', beastieName: 'assets/bully-minion.png',)),
-          );
-      }
-    ));
-
+        }
+      ));
+    }
+    
     setState(() {});
   }
 
@@ -187,7 +174,7 @@ class _MathGoState extends State<MathGo> {
       _markers.add(Marker(
         markerId: MarkerId('sourcePin'),
         position: pinPosition,
-        icon: sourceIcon
+        icon: sourceIcon,
       ));
     });
       
@@ -255,7 +242,7 @@ class _MathGoState extends State<MathGo> {
       //app bar 
       appBar: AppBar(
         title: Text('Math GO! Map Screen'),
-        backgroundColor: Colors.blue
+        backgroundColor: Colors.orange
       ),
       bottomNavigationBar: BottomNavigationBar(
             showUnselectedLabels: true,
@@ -301,23 +288,8 @@ class _MathGoState extends State<MathGo> {
               // my map has completed being created;
               // i'm ready to show the pins on the map
 
-              showPinsOnMap();
+              showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
           }),
-          Align (
-            alignment: Alignment.bottomCenter,
-            child: RaisedButton( 
-              onPressed: () { 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => BeastieAr()),
-                );
-              },
-              color: Colors.blue,
-              textColor: Colors.white,
-              elevation: 5,
-              child: const Text('AR Screen!'),
-            ),
-          ),
         ],
       ),
     );

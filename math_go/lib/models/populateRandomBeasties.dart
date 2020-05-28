@@ -18,7 +18,8 @@ void populateRandomBeasties (List<beastieInfo> randomBeasties) async{
                datasnapshot.documents[chosenBeastie].data['name'],
                datasnapshot.documents[chosenBeastie].data['difficulty'], 
                datasnapshot.documents[chosenBeastie].data['question'], 
-               0));
+               datasnapshot.documents[chosenBeastie].data['answer'],
+               datasnapshot.documents[chosenBeastie].data['imageUrl']));
             }
   });
 }
