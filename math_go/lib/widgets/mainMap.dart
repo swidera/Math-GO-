@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
@@ -22,8 +24,6 @@ const double CAMERA_BEARING = 30;
 const LatLng SOURCE_LOCATION = LatLng(45.512230, -122.658722);
 
 //Resource Used for Google Map Implementation: https://codelabs.developers.google.com/codelabs/google-maps-in-flutter/#4
-
-
 
 class _MathGoState extends State<MathGo> {
   //nav bar variables
@@ -54,7 +54,7 @@ class _MathGoState extends State<MathGo> {
   LocationData currentLocation;
   Location location;
   Set<Marker> _markers = Set<Marker>();
-  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _controller;
 
   //BitMap Variables
   BitmapDescriptor sourceIcon;
@@ -64,6 +64,9 @@ class _MathGoState extends State<MathGo> {
   var beastieCount = 0;
   List<beastieInfo> beastiesToSpawn = new List<beastieInfo>();
   List<beastieInfo> testBeastiesToSpawn = new List<beastieInfo>();
+
+  CameraPosition initialCameraPosition;
+
 
   void initState() {
     super.initState();
@@ -75,40 +78,56 @@ class _MathGoState extends State<MathGo> {
         updatePinOnMap();
     });
 
-    //TO DO: variable for list of beasties
+  }
 
-    populateRandomBeasties(beastiesToSpawn);
+  Future<bool> getMapData() async{
 
-    testBeastiesToSpawn.add(new beastieInfo("Eagle", "easy", "2 + 2", 4.0, '/assets/eagle-emblem.png'));
+    beastiesToSpawn = await populateRandomBeasties();
 
-    setIcons(testBeastiesToSpawn);
+    testBeastiesToSpawn.add(new beastieInfo("Eagle", "easy", "2 + 2", 4.0, 'assets/eagle-emblem.png'));
+
+    await setIcons(testBeastiesToSpawn);
     
-    setInitialLocation();
+    await setInitialLocation();
+
+    await showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
+
+    return true;
   }
 
   //Free use icons come from https://game-icons.net/
   //Setting up icon for player
   Future<void> setIcons(List<beastieInfo> beastiesList) async {
+
+    beastiesList.add(new beastieInfo("Eagle", "easy", "2 + 2", 4.0, 'assets/eagle-emblem.png'));
+
     //TO DO: go through list and set up each icon
-    Size imageSize = new Size(100, 100);
+    Size imageSize = new Size(3, 3);
     sourceIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5, size: imageSize),
+      ImageConfiguration(size: imageSize),
         'assets/plane-pilot.png');
 
     for(var i = 0; i < beastiesList.length; i++) {
-      beastieBitMap[i] = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5, size: imageSize),
-          beastiesList[i].imageUrl.toString());
+      beastieBitMap.add(await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 1, size: imageSize),
+          beastiesList[i].imageUrl.toString()));
     }
+    
   }
 
   //setting initial location
-  void setInitialLocation() async {
+  Future<void> setInitialLocation() async {
     currentLocation = await location.getLocation();
+    initialCameraPosition = CameraPosition(
+      zoom: CAMERA_ZOOM,
+      tilt: CAMERA_TILT,
+      bearing: CAMERA_BEARING,
+      target: LatLng(currentLocation.latitude, currentLocation.longitude),
+    );
   }
 
   //function to show markers on google maps of beasties and player
-  void showPinsOnMap(List<BitmapDescriptor> beastieBitMap, List<beastieInfo> beastiesList) {
+  Future<void> showPinsOnMap(List<BitmapDescriptor> beastieBitMap, List<beastieInfo> beastiesList) {
     var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
 
     //Player marker
@@ -144,13 +163,13 @@ class _MathGoState extends State<MathGo> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BeastieAr(beastie: beastiesList[i])),
+            MaterialPageRoute(builder: (context) => BeastieAr(loggedInUser: widget.loggedInUser, beastie: beastiesList[i])),
           );
         }
       ));
     }
     
-    setState(() {});
+    //setState(() {});
   }
 
   void updatePinOnMap() async {
@@ -161,22 +180,7 @@ class _MathGoState extends State<MathGo> {
       target: LatLng(currentLocation.latitude, currentLocation.longitude),
     );
 
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
-
-    setState(() {
-
-      var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
-
-      _markers.removeWhere(
-        (m) => m.markerId.value == 'sourcePin');
-
-      _markers.add(Marker(
-        markerId: MarkerId('sourcePin'),
-        position: pinPosition,
-        icon: sourceIcon,
-      ));
-    });
+    _controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
       
   }
 
@@ -221,79 +225,75 @@ class _MathGoState extends State<MathGo> {
 
   @override
   Widget build(BuildContext context) {
-    CameraPosition initialCameraPosition = CameraPosition(
-      zoom: CAMERA_ZOOM,
-      tilt: CAMERA_TILT,
-      bearing: CAMERA_BEARING,
-      target: SOURCE_LOCATION
-    );
+    return FutureBuilder<bool>(
+          future: getMapData(),
+          builder: (BuildContext buildContext, AsyncSnapshot<bool> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done
+                && snapshot.data
+                && snapshot.hasData) {
+                    return Scaffold(
+                      //app bar 
+                      appBar: AppBar(
+                        title: Text('Math GO! Map Screen'),
+                        backgroundColor: Colors.orange
+                      ),
+                      bottomNavigationBar: BottomNavigationBar(
+                            showUnselectedLabels: true,
+                            type: BottomNavigationBarType.fixed,
+                            items: const <BottomNavigationBarItem>[
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.map),
+                                title: Text('Home'),
+                              ),
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.child_care),
+                                title: Text('Beasties'),
+                              ),
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.score),
+                                title: Text('Score'),
+                              ),
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.map),
+                                title: Text('Leaderboard'),
+                              ),
+                              BottomNavigationBarItem(
+                                icon: Icon(Icons.system_update_alt),
+                                title: Text('Logout'),
+                              ),
+                            ],
+                            currentIndex: pageIndex,
+                            selectedItemColor: Colors.deepOrangeAccent,
+                            onTap: changePage,
+                      ),
+                      body:googleMap()
+                    );
+                  }
+              return Center(
+                // Display Progress Indicator
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.green,
+                ),
+              );
+            });
+  }
 
-    if (currentLocation != null) {
-      initialCameraPosition = CameraPosition(
-          target: LatLng(currentLocation.latitude,
-            currentLocation.longitude),
-          zoom: CAMERA_ZOOM,
-          tilt: CAMERA_TILT,
-          bearing: CAMERA_BEARING
-      );
-    }
-
-    return Scaffold(
-      //app bar 
-      appBar: AppBar(
-        title: Text('Math GO! Map Screen'),
-        backgroundColor: Colors.orange
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map),
-                title: Text('Home'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.child_care),
-                title: Text('Beasties'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.score),
-                title: Text('Score'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map),
-                title: Text('Leaderboard'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.system_update_alt),
-                title: Text('Logout'),
-              ),
-            ],
-            currentIndex: pageIndex,
-            selectedItemColor: Colors.deepOrangeAccent,
-            onTap: changePage,
-      ),
-      body: Stack(
-        children: <Widget>[
-          //google map widget fall
-          GoogleMap(
-          myLocationEnabled: true,
-          compassEnabled: true,
-          tiltGesturesEnabled: true,
-          markers: _markers,
-          mapType: MapType.normal,
-          initialCameraPosition: initialCameraPosition,
-          onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-              // my map has completed being created;
-              // i'm ready to show the pins on the map
-
-              showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
-          }),
-        ],
-      ),
+Widget googleMap(){
+    return Container(
+        child: GoogleMap(
+            myLocationEnabled: true,
+            compassEnabled: true,
+            tiltGesturesEnabled: true,
+            markers: _markers,
+            mapType: MapType.normal,
+            initialCameraPosition: initialCameraPosition,
+            onMapCreated: (GoogleMapController controller) {
+              _controller=controller;
+            }
+        )
     );
   }
+
 }
 
 class MathGo extends StatefulWidget {
@@ -302,3 +302,4 @@ class MathGo extends StatefulWidget {
 
   State createState() => _MathGoState();
 }
+

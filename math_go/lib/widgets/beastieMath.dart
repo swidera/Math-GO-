@@ -5,16 +5,17 @@ import 'dart:io';
 //import 'package:path/path.dart' as path;
 //import 'dart:convert';
 import 'package:location/location.dart';
+import 'package:math_go/models/updateUserAfterBattle.dart';
 //import 'package:intl/intl.dart';
 import '../models/beastieMathAuth.dart';
 import '../widgets/mainMap.dart';
 import '../models/getBeasties.dart';
 
 class BeastieMathProb extends StatefulWidget{
-  final String title;
+  final String loggedInUser;
   final beastieInfo beastie;
   //TO DO: set beastie math constructor to take in beastie object and user log in
-  const BeastieMathProb({Key key, this.title, this.beastie}) : super(key: key);
+  const BeastieMathProb({Key key, this.loggedInUser, this.beastie}) : super(key: key);
 
 
   @override
@@ -29,7 +30,6 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
   var _beastieAnswer = 0.0;
   var _userAnswer = 0.0;
   var problem = '';
-  String loggedInUser = '';
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MathGo(loggedInUser)),
+              MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser)),
             );
           },
         ),
@@ -53,6 +53,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Text(widget.beastie.question),
               TextFormField(
                 autofocus: true,
                 decoration: InputDecoration(
@@ -79,7 +80,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                   _beastieAnswer = widget.beastie.answer;
                   _userAnswer = answer;
                   if(_beastieAnswer == _userAnswer){
-                    //add upload beastie captured function
+                    await updateUserAfterBattle(widget.loggedInUser, true, widget.beastie);
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -89,10 +90,11 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                     );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MathGo(loggedInUser))
+                      MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser))
                     );
                   }
                   else{
+                    await updateUserAfterBattle(widget.loggedInUser, false, widget.beastie);
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -102,7 +104,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                     );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MathGo(loggedInUser))
+                      MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser))
                     );
                   }
                 },

@@ -15,33 +15,32 @@ import '../models/getBeasties.dart';
 
 class BeastieAr extends StatefulWidget {
   @override
-  final String title;
+  final String loggedInUser;
   //final beastieInfo beastieName;
   //final String loggedInUser;
   final beastieInfo beastie;
 
   //TO DO: set constructor to take beastieInfo object and logged in user string
-  const BeastieAr({Key key, this.title, this.beastie}) : super(key: key);
+  const BeastieAr({Key key, this.loggedInUser, this.beastie}) : super(key: key);
 
   _BeastieArState createState() => _BeastieArState();
 }
 
 class _BeastieArState extends State<BeastieAr> {
   ArCoreController arCoreController;
-  String loggedInUser ='';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text("AR Screen"),
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MathGo(loggedInUser)),
+                MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser)),
               );
             },
           ),
@@ -86,7 +85,7 @@ class _BeastieArState extends State<BeastieAr> {
     Navigator.push(
       context,
       //TO DO: set beastie math constructor to take in beastie info object and logged in user
-      MaterialPageRoute(builder: (context) => BeastieMathProb(title: 'Math Problem Screen', beastie: widget.beastie))
+      MaterialPageRoute(builder: (context) => BeastieMathProb(loggedInUser: widget.loggedInUser, beastie: widget.beastie))
     );
   }
 
