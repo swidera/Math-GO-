@@ -54,7 +54,8 @@ class _MathGoState extends State<MathGo> {
   LocationData currentLocation;
   Location location;
   Set<Marker> _markers = Set<Marker>();
-  GoogleMapController _controller;
+  //GoogleMapController _controller;
+  Completer<GoogleMapController> _controller = Completer();
 
   //BitMap Variables
   BitmapDescriptor sourceIcon;
@@ -68,19 +69,25 @@ class _MathGoState extends State<MathGo> {
   CameraPosition initialCameraPosition;
 
 
-  void initState() {
-    super.initState();
+  // void initState() {
+  //   super.initState();
 
+  //   location = new Location();
+
+  //   location.onLocationChanged().listen((LocationData cLoc) {
+  //       currentLocation = cLoc;
+  //       updatePinOnMap();
+  //   });
+
+  // }
+
+  Future<bool> getMapData() async{
     location = new Location();
 
     location.onLocationChanged().listen((LocationData cLoc) {
         currentLocation = cLoc;
         updatePinOnMap();
     });
-
-  }
-
-  Future<bool> getMapData() async{
 
     beastiesToSpawn = await populateRandomBeasties();
 
@@ -151,9 +158,9 @@ class _MathGoState extends State<MathGo> {
 
       var randPosition = LatLng(currentLocation.latitude + randLat, currentLocation.longitude + randLong);
 
-      print('LAT LONG DATA BELOW:');
-      print(randLat);
-      print(randLong);
+      // print('LAT LONG DATA BELOW:');
+      // print(randLat);
+      // print(randLong);
       //print(beastieBitMap[i].toString());
 
       _markers.add(Marker(
@@ -172,7 +179,7 @@ class _MathGoState extends State<MathGo> {
     //setState(() {});
   }
 
-  void updatePinOnMap() async {
+  Future<void> updatePinOnMap() async {
     CameraPosition cPosition = CameraPosition(
       zoom: CAMERA_ZOOM,
       tilt: CAMERA_TILT,
@@ -180,7 +187,25 @@ class _MathGoState extends State<MathGo> {
       target: LatLng(currentLocation.latitude, currentLocation.longitude),
     );
 
-    _controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+    final GoogleMapController controller = await _controller.future;
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+
+  //  setState(() {
+      var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
+
+      _markers.removeWhere(
+        (m) => m.markerId.value == 'sourcePin');
+
+      _markers.add(Marker(
+        markerId: MarkerId('sourcePin'),
+        position: pinPosition,
+        icon: sourceIcon
+      ));
+
+  //  });
+
+    setState(() {});
       
   }
 
@@ -288,7 +313,8 @@ Widget googleMap(){
             mapType: MapType.normal,
             initialCameraPosition: initialCameraPosition,
             onMapCreated: (GoogleMapController controller) {
-              _controller=controller;
+              _controller.complete(controller);
+              //_controller=controller;
             }
         )
     );
