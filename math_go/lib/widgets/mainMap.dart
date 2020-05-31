@@ -92,6 +92,8 @@ class _MathGoState extends State<MathGo> {
 
     await showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
 
+    //setState(() {});
+
     return true;
   }
 
@@ -102,7 +104,7 @@ class _MathGoState extends State<MathGo> {
     beastiesList.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
 
     //TO DO: go through list and set up each icon
-    Size imageSize = new Size(3, 3);
+    Size imageSize = Size(1, 1);
     sourceIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: imageSize),
         'assets/plane-pilot.png');
@@ -147,12 +149,22 @@ class _MathGoState extends State<MathGo> {
     for(var i = 0; i < beastieBitMap.length; i++) {
       var randX = new Random();
       var randY = new Random();
+      var posRandX = new Random();
+      var posRandY = new Random();
 
       var randLat = 0.0;
       var randLong = 0.0;
 
-      randLat = (randX.nextInt(5) + 1)*0.001;
-      randLong = (randY.nextInt(5) + 1) *0.001;
+      randLat = (randX.nextInt(10) + 1)*0.001;
+      randLong = (randY.nextInt(10) + 1) *0.001;
+
+      if (posRandX.nextInt(1) == 0) {
+        randLat = randLat * (-1);
+      }
+      
+      if (posRandY.nextInt(1) == 0) {
+        randLong = randLong * (-1);
+      }
 
       var randPosition = LatLng(currentLocation.latitude + randLat, currentLocation.longitude + randLong);
 
