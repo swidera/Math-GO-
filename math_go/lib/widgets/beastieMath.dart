@@ -53,9 +53,11 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Text(widget.beastie.name),
               Image.asset(
                 widget.beastie.imageUrl,
-                scale: 0.5
+                height: 100,
+                width: 100,
               ),
               Text(widget.beastie.question),
               TextFormField(

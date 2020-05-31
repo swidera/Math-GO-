@@ -86,11 +86,13 @@ class _MathGoState extends State<MathGo> {
 
     testBeastiesToSpawn.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
 
-    await setIcons(testBeastiesToSpawn);
+    //await setIcons(testBeastiesToSpawn);
+    await setIcons(beastiesToSpawn);
     
     await setInitialLocation();
 
-    await showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
+    //await showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
+    await showPinsOnMap(beastieBitMap, beastiesToSpawn);
 
     //setState(() {});
 
@@ -101,7 +103,7 @@ class _MathGoState extends State<MathGo> {
   //Setting up icon for player
   Future<void> setIcons(List<beastieInfo> beastiesList) async {
 
-    beastiesList.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
+    //beastiesList.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
 
     //TO DO: go through list and set up each icon
     Size imageSize = Size(1, 1);
