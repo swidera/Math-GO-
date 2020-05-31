@@ -26,9 +26,9 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
   final formKey = GlobalKey<FormState>();
   File image;
   var entryCount = 0;
-  var answer = 0.0;
-  var _beastieAnswer = 0.0;
-  var _userAnswer = 0.0;
+  var answer;
+  var _beastieAnswer;
+  var _userAnswer;
   var problem = '';
 
   @override
@@ -53,6 +53,10 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Image.asset(
+                widget.beastie.imageUrl,
+                scale: 0.5
+              ),
               Text(widget.beastie.question),
               TextFormField(
                 autofocus: true,
@@ -77,8 +81,13 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
               SizedBox(height: 10),
               RaisedButton(
                 onPressed: () async {
+                  if(formKey.currentState.validate()) {
+                    formKey.currentState.save();
+                  }
                   _beastieAnswer = widget.beastie.answer;
                   _userAnswer = answer;
+                  print('Beastie Answer: ${_beastieAnswer}\n');
+                  print("user answer: ${_userAnswer}\n");
                   if(_beastieAnswer == _userAnswer){
                     await updateUserAfterBattle(widget.loggedInUser, true, widget.beastie);
                     showDialog(
@@ -86,26 +95,29 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                       builder: (BuildContext context) {
                         return  AlertDialog(
                           title:  Text('Answer Correct.  Beastie Captured.')
-                        );}
-                    );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser))
-                    );
+                        );
+                      }
+                      ).then((val) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser))
+                        );                       
+                    });
                   }
                   else{
                     await updateUserAfterBattle(widget.loggedInUser, false, widget.beastie);
-                    showDialog(
+                    await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return  AlertDialog(
                           title:  Text('Answer Incorrect.  Beastie Got Away.')
                         );}
-                    );
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser))
-                    );
+                    ).then((val) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MathGo(widget.loggedInUser))
+                      );                       
+                    });
                   }
                 },
                 child: Text('Submit Answer')

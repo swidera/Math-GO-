@@ -52,7 +52,7 @@ class _MathGoState extends State<MathGo> {
 
   //map variables
   LocationData currentLocation;
-  Location location;
+  Location location = Location();
   Set<Marker> _markers = Set<Marker>();
   //GoogleMapController _controller;
   Completer<GoogleMapController> _controller = Completer();
@@ -74,24 +74,17 @@ class _MathGoState extends State<MathGo> {
 
   //   location = new Location();
 
-  //   location.onLocationChanged().listen((LocationData cLoc) {
-  //       currentLocation = cLoc;
-  //       updatePinOnMap();
-  //   });
+    // location.onLocationChanged().listen((LocationData cLoc) {
+    //     currentLocation = cLoc;
+    //     updatePinOnMap();
+    // });
 
   // }
 
   Future<bool> getMapData() async{
-    location = new Location();
-
-    location.onLocationChanged().listen((LocationData cLoc) {
-        currentLocation = cLoc;
-        updatePinOnMap();
-    });
-
     beastiesToSpawn = await populateRandomBeasties();
 
-    testBeastiesToSpawn.add(new beastieInfo("Eagle", "easy", "2 + 2", 4.0, 'assets/eagle-emblem.png'));
+    testBeastiesToSpawn.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
 
     await setIcons(testBeastiesToSpawn);
     
@@ -106,7 +99,7 @@ class _MathGoState extends State<MathGo> {
   //Setting up icon for player
   Future<void> setIcons(List<beastieInfo> beastiesList) async {
 
-    beastiesList.add(new beastieInfo("Eagle", "easy", "2 + 2", 4.0, 'assets/eagle-emblem.png'));
+    beastiesList.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
 
     //TO DO: go through list and set up each icon
     Size imageSize = new Size(3, 3);
@@ -131,6 +124,11 @@ class _MathGoState extends State<MathGo> {
       bearing: CAMERA_BEARING,
       target: LatLng(currentLocation.latitude, currentLocation.longitude),
     );
+
+    location.onLocationChanged().listen((LocationData cLoc) {
+        currentLocation = cLoc;
+        updatePinOnMap();
+    });
   }
 
   //function to show markers on google maps of beasties and player
@@ -157,11 +155,6 @@ class _MathGoState extends State<MathGo> {
       randLong = (randY.nextInt(5) + 1) *0.001;
 
       var randPosition = LatLng(currentLocation.latitude + randLat, currentLocation.longitude + randLong);
-
-      // print('LAT LONG DATA BELOW:');
-      // print(randLat);
-      // print(randLong);
-      //print(beastieBitMap[i].toString());
 
       _markers.add(Marker(
         markerId: MarkerId(i.toString()),
@@ -204,8 +197,7 @@ class _MathGoState extends State<MathGo> {
       ));
 
   //  });
-
-    setState(() {});
+    //setState(() {});
       
   }
 
