@@ -69,8 +69,8 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                   //store value in some object
                   answer = double.parse(value);
                 },
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                //inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                 validator: (value) {
                   if(value.isEmpty) {
                     return 'Please enter a Number';

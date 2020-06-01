@@ -52,7 +52,7 @@ class _MathGoState extends State<MathGo> {
 
   //map variables
   LocationData currentLocation;
-  Location location = Location();
+  Location location;
   Set<Marker> _markers = Set<Marker>();
   //GoogleMapController _controller;
   Completer<GoogleMapController> _controller = Completer();
@@ -68,17 +68,15 @@ class _MathGoState extends State<MathGo> {
 
   CameraPosition initialCameraPosition;
 
-
   void initState() {
     super.initState();
 
     location = new Location();
 
-    location.onLocationChanged().listen((LocationData cLoc) {
-        currentLocation = cLoc;
-        updatePinOnMap();
-    });
-
+    // location.onLocationChanged().listen((LocationData cLoc) async {
+    //     //currentLocation = await location.getLocation();
+    //     updatePinOnMap();
+    // });
   }
 
   Future<bool> getMapData() async{
@@ -90,9 +88,6 @@ class _MathGoState extends State<MathGo> {
     await setIcons(beastiesToSpawn);
     
     await setInitialLocation();
-    // for(int i = 0; i < beastiesToSpawn.length; i++) {
-    //   print(beastiesToSpawn[i].name);
-    // }
 
     //await showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
     await showPinsOnMap(beastieBitMap, beastiesToSpawn);
@@ -131,6 +126,7 @@ class _MathGoState extends State<MathGo> {
       bearing: CAMERA_BEARING,
       target: LatLng(currentLocation.latitude, currentLocation.longitude),
     );
+
   }
 
   //function to show markers on google maps of beasties and player
