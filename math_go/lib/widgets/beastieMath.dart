@@ -55,7 +55,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
             children: [
               Text(widget.beastie.name),
               Image.asset(
-                widget.beastie.imageUrl,
+                'assets/'+widget.beastie.imageUrl,
                 height: 100,
                 width: 100,
               ),

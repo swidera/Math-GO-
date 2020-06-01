@@ -57,13 +57,13 @@ class _BeastieArState extends State<BeastieAr> {
   void _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
     //TO DO: Set beastie constructor to pass Beastie Object and logged in User name
-    arCoreController.onNodeTap = (name) => onTapHandler(widget.beastie.imageUrl);
+    arCoreController.onNodeTap = (name) => onTapHandler();
     _addBeastie(arCoreController);
   }
 
   Future _addBeastie(ArCoreController controller) async {
     //TO DO: Set widget to load beastie.image url instead of passed in beastiename
-    final ByteData textureBytes = await rootBundle.load(widget.beastie.imageUrl);
+    final ByteData textureBytes = await rootBundle.load('assets/' + widget.beastie.imageUrl);
 
     final material = ArCoreMaterial(
       color: Color.fromARGB(120, 66, 134, 244),
@@ -81,7 +81,7 @@ class _BeastieArState extends State<BeastieAr> {
     controller.addArCoreNode(node);
   }
 
-  void onTapHandler(String name) {
+  void onTapHandler() {
     Navigator.push(
       context,
       //TO DO: set beastie math constructor to take in beastie info object and logged in user

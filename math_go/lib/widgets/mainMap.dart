@@ -69,17 +69,17 @@ class _MathGoState extends State<MathGo> {
   CameraPosition initialCameraPosition;
 
 
-  // void initState() {
-  //   super.initState();
+  void initState() {
+    super.initState();
 
-  //   location = new Location();
+    location = new Location();
 
-    // location.onLocationChanged().listen((LocationData cLoc) {
-    //     currentLocation = cLoc;
-    //     updatePinOnMap();
-    // });
+    location.onLocationChanged().listen((LocationData cLoc) {
+        currentLocation = cLoc;
+        updatePinOnMap();
+    });
 
-  // }
+  }
 
   Future<bool> getMapData() async{
     beastiesToSpawn = await populateRandomBeasties();
@@ -90,6 +90,9 @@ class _MathGoState extends State<MathGo> {
     await setIcons(beastiesToSpawn);
     
     await setInitialLocation();
+    // for(int i = 0; i < beastiesToSpawn.length; i++) {
+    //   print(beastiesToSpawn[i].name);
+    // }
 
     //await showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
     await showPinsOnMap(beastieBitMap, beastiesToSpawn);
@@ -114,7 +117,7 @@ class _MathGoState extends State<MathGo> {
     for(var i = 0; i < beastiesList.length; i++) {
       beastieBitMap.add(await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 1, size: imageSize),
-          beastiesList[i].imageUrl.toString()));
+          'assets/' + beastiesList[i].imageUrl.toString()));
     }
     
   }
@@ -128,11 +131,6 @@ class _MathGoState extends State<MathGo> {
       bearing: CAMERA_BEARING,
       target: LatLng(currentLocation.latitude, currentLocation.longitude),
     );
-
-    location.onLocationChanged().listen((LocationData cLoc) {
-        currentLocation = cLoc;
-        updatePinOnMap();
-    });
   }
 
   //function to show markers on google maps of beasties and player
@@ -157,8 +155,8 @@ class _MathGoState extends State<MathGo> {
       var randLat = 0.0;
       var randLong = 0.0;
 
-      randLat = (randX.nextInt(10) + 1)*0.001;
-      randLong = (randY.nextInt(10) + 1) *0.001;
+      randLat = (randX.nextInt(5) + 1)*0.001;
+      randLong = (randY.nextInt(5) + 1) *0.001;
 
       if (posRandX.nextInt(1) == 0) {
         randLat = randLat * (-1);

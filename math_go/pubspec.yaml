@@ -55,6 +55,65 @@ flutter:
     - assets/bully-minion.png
     - assets/eagle-emblem.png
     - assets/plane-pilot.png
+    - assets/anubis.png
+    - assets/baby-bug.png
+    - assets/bandit.png
+    - assets/brute.png
+    - assets/centaur.png
+    - assets/centipede.png
+    - assets/chicken.png
+    - assets/coiled-snake.png
+    - assets/crab.png
+    - assets/dinosaur.png
+    - assets/double-fish.png
+    - assets/dragonfly.png
+    - assets/duck.png
+    - assets/emperor.png
+    - assets/evil-bat.png
+    - assets/fairy.png
+    - assets/fox.png
+    - assets/ghost-cat.png
+    - assets/giant.png
+    - assets/goat.png
+    - assets/griffin.png
+    - assets/grimoire.png
+    - assets/happy-dog.png
+    - assets/hawk.png
+    - assets/kangaroo.png
+    - assets/kitty.png
+    - assets/knight.png
+    - assets/koala.png
+    - assets/lion.png
+    - assets/loud-bird.png
+    - assets/manta-ray.png
+    - assets/minotaur.png
+    - assets/nano-bot.png
+    - assets/orc.png
+    - assets/panda.png
+    - assets/pegasus.png
+    - assets/pig.png
+    - assets/polar-bear.png
+    - assets/robot-golem.png
+    - assets/sasquatch.png
+    - assets/scarab.png
+    - assets/sea-dragon.png
+    - assets/sea-serpent.png
+    - assets/sheep.png
+    - assets/skull.png
+    - assets/spiked-snail.png
+    - assets/tank.png
+    - assets/tiger.png
+    - assets/toucan.png
+    - assets/troll.png
+    - assets/turd.png
+    - assets/turtle.png
+    - assets/viking.png
+    - assets/vile-fluid.png
+    - assets/virus.png
+    - assets/werewolf.png
+    - assets/zombie.png
+
+
     
   # To add assets to your application, add an assets section, like this:
   # assets:
