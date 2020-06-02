@@ -26,7 +26,7 @@ Future<bool> updateUserAfterBattle (String username, bool captured, beastieInfo 
                    _mathGoStore.collection("users")
                       .document(username).collection("myBeasties").add({
                         'name': currentBeastie.name,
-                        ////////////add image path when its added to beastieInfo object    
+                        'imageUrl':currentBeastie.imageUrl
                       });
                 }
                 updateSuccessful=true;
