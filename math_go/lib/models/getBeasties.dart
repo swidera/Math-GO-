@@ -21,11 +21,7 @@ Future<List<beastieInfo>> getUsersBeasties (String username) async{
               for(int i=0; i<datasnapshot.documents.length; i++){
                 //beastieIds.add(datasnapshot.documents[i].documentID.toString());
                 myBeasties.add(new beastieInfo(
-                datasnapshot.documents[i].data['name'],
-                "",
-                "",
-                0,
-                ""     
+                datasnapshot.documents[i].data['name'], "", "", 0, datasnapshot.documents[i].data['imageUrl']
                 ));
                 
               }
