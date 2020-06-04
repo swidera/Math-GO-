@@ -69,14 +69,14 @@ class _MathGoState extends State<MathGo> {
   CameraPosition initialCameraPosition;
 
   void initState() {
-    super.initState();
+     super.initState();
 
-    location = new Location();
+     location = new Location();
 
-    // location.onLocationChanged().listen((LocationData cLoc) async {
-    //     //currentLocation = await location.getLocation();
-    //     updatePinOnMap();
-    // });
+    location.onLocationChanged().listen((LocationData cLoc) async {
+        //currentLocation = cLoc;
+        updatePinOnMap();
+    });
   }
 
   Future<bool> getMapData() async{
@@ -105,9 +105,9 @@ class _MathGoState extends State<MathGo> {
 
     //TO DO: go through list and set up each icon
     Size imageSize = Size(1, 1);
-    sourceIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: imageSize),
-        'assets/plane-pilot.png');
+    // sourceIcon = await BitmapDescriptor.fromAssetImage(
+    //   ImageConfiguration(size: imageSize),
+    //     'assets/plane-pilot.png');
 
     for(var i = 0; i < beastiesList.length; i++) {
       beastieBitMap.add(await BitmapDescriptor.fromAssetImage(
@@ -119,6 +119,13 @@ class _MathGoState extends State<MathGo> {
 
   //setting initial location
   Future<void> setInitialLocation() async {
+    //location = new Location();
+
+    // location.onLocationChanged().listen((LocationData cLoc) async {
+    //     currentLocation = cLoc;
+    //     updatePinOnMap();
+    // });
+
     currentLocation = await location.getLocation();
     initialCameraPosition = CameraPosition(
       zoom: CAMERA_ZOOM,
@@ -131,14 +138,14 @@ class _MathGoState extends State<MathGo> {
 
   //function to show markers on google maps of beasties and player
   Future<void> showPinsOnMap(List<BitmapDescriptor> beastieBitMap, List<beastieInfo> beastiesList) {
-    var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
+    //var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
 
     //Player marker
-    _markers.add(Marker(
-      markerId: MarkerId('sourcePin') ,
-      position: pinPosition,
-      icon: sourceIcon,
-    ));
+    // _markers.add(Marker(
+    //   markerId: MarkerId('sourcePin') ,
+    //   position: pinPosition,
+    //   icon: sourceIcon,
+    // ));
     //Beastie markers
 
     //TO DO: go through list and add each marker
@@ -190,23 +197,24 @@ class _MathGoState extends State<MathGo> {
 
     final GoogleMapController controller = await _controller.future;
 
-    controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+    if(_controller.isCompleted) {
+      controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+    }
 
   //  setState(() {
-      var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
+      // var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
 
-      _markers.removeWhere(
-        (m) => m.markerId.value == 'sourcePin');
+      // _markers.removeWhere(
+      //   (m) => m.markerId.value == 'sourcePin');
 
-      _markers.add(Marker(
-        markerId: MarkerId('sourcePin'),
-        position: pinPosition,
-        icon: sourceIcon
-      ));
+      // _markers.add(Marker(
+      //   markerId: MarkerId('sourcePin'),
+      //   position: pinPosition,
+      //   icon: sourceIcon
+      // ));
 
   //  });
-    //setState(() {});
-      
+    //setState(() {});  
   }
 
    void changePage(int pagePicked) async{
@@ -291,7 +299,7 @@ class _MathGoState extends State<MathGo> {
                             selectedItemColor: Colors.deepOrangeAccent,
                             onTap: changePage,
                       ),
-                      body:googleMap()
+                      body: googleMap()
                     );
                   }
               return Center(
