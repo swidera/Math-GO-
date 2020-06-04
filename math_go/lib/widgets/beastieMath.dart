@@ -1,20 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
-//import 'package:path/path.dart' as path;
-//import 'dart:convert';
-import 'package:location/location.dart';
 import 'package:math_go/models/updateUserAfterBattle.dart';
-//import 'package:intl/intl.dart';
-import '../models/beastieMathAuth.dart';
 import '../widgets/mainMap.dart';
 import '../models/getBeasties.dart';
 
 class BeastieMathProb extends StatefulWidget{
   final String loggedInUser;
   final beastieInfo beastie;
-  //TO DO: set beastie math constructor to take in beastie object and user log in
   const BeastieMathProb({Key key, this.loggedInUser, this.beastie}) : super(key: key);
 
 
@@ -35,7 +28,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Math Problem'),
+        title: Text('Beastie Battle!'),
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back),
           onPressed: () {
@@ -53,13 +46,17 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              //Display beastie name
               Text(widget.beastie.name),
+              //show beastie image
               Image.asset(
                 'assets/'+widget.beastie.imageUrl,
                 height: 100,
                 width: 100,
               ),
+              //display beastie question
               Text(widget.beastie.question),
+              //user form to fill in answer
               TextFormField(
                 autofocus: true,
                 decoration: InputDecoration(
@@ -70,7 +67,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                   answer = double.parse(value);
                 },
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
-                //inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+                //validate user input answer
                 validator: (value) {
                   if(value.isEmpty) {
                     return 'Please enter a Number';
@@ -81,11 +78,13 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                 }
               ),
               SizedBox(height: 10),
+              //raised button to validate and save answer
               RaisedButton(
                 onPressed: () async {
                   if(formKey.currentState.validate()) {
                     formKey.currentState.save();
                   }
+                  //if answer is correct capture beastie and reroute to map
                   _beastieAnswer = widget.beastie.answer;
                   _userAnswer = answer;
                   print('Beastie Answer: ${_beastieAnswer}\n');
@@ -106,6 +105,7 @@ class _BeastieMathProbState extends State<BeastieMathProb> {
                         );                       
                     });
                   }
+                  //if answer is wrong then beastie runs away and user is rerouted to map
                   else{
                     await updateUserAfterBattle(widget.loggedInUser, false, widget.beastie);
                     await showDialog(

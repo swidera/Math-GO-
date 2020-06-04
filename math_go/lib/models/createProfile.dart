@@ -24,7 +24,7 @@ Future<String> createUser (String username, String pw) async{
                 _mathGoStore.collection("users").document(username).collection("myBeasties")
                 .document('De2lxEUNbVbgYmjjHsbp')
                 .setData({
-                  'name': 'Turd'
+                 'name': 'Turd'
                 });
                 createStatus="The user has been created";
               }

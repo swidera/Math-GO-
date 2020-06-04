@@ -1,4 +1,4 @@
-//import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,10 +17,12 @@ import 'beastieAR.dart';
 import '../models/getBeasties.dart';
 import '../models/populateRandomBeasties.dart';
 import 'dart:math';
+import 'dart:ui' as ui;
 
 const double CAMERA_ZOOM = 16;
 const double CAMERA_TILT = 60;
 const double CAMERA_BEARING = 30;
+//temp source location that gets reset upon update
 const LatLng SOURCE_LOCATION = LatLng(45.512230, -122.658722);
 
 //Resource Used for Google Map Implementation: https://codelabs.developers.google.com/codelabs/google-maps-in-flutter/#4
@@ -54,79 +56,75 @@ class _MathGoState extends State<MathGo> {
   LocationData currentLocation;
   Location location;
   Set<Marker> _markers = Set<Marker>();
+
   //GoogleMapController _controller;
   Completer<GoogleMapController> _controller = Completer();
 
   //BitMap Variables
   BitmapDescriptor sourceIcon;
-  List<BitmapDescriptor> beastieBitMap = new List<BitmapDescriptor>();
+  List<Uint8List> beastieBitMap = new List<Uint8List>();
 
   //Beastie Variables
   var beastieCount = 0;
   List<beastieInfo> beastiesToSpawn = new List<beastieInfo>();
-  List<beastieInfo> testBeastiesToSpawn = new List<beastieInfo>();
+  //List<beastieInfo> testBeastiesToSpawn = new List<beastieInfo>();
 
   CameraPosition initialCameraPosition;
 
   void initState() {
      super.initState();
 
-     location = new Location();
+    location = new Location();
 
-    location.onLocationChanged().listen((LocationData cLoc) async {
-        //currentLocation = cLoc;
-        updatePinOnMap();
-    });
+    //TO DO - FUTURE: on location change call updatePinOnMap to update user location and animate camera
+    // location.onLocationChanged().listen((LocationData cLoc) async {
+    //     currentLocation = cLoc;
+    //     updatePinOnMap();
+    // });
   }
 
   Future<bool> getMapData() async{
+    //set beasties to spawn list
     beastiesToSpawn = await populateRandomBeasties();
-
-    testBeastiesToSpawn.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
-
-    //await setIcons(testBeastiesToSpawn);
+    //set the icons used on map
     await setIcons(beastiesToSpawn);
-    
+    //set initial player location
     await setInitialLocation();
-
-    //await showPinsOnMap(beastieBitMap, testBeastiesToSpawn);
+    //show beasties on map
     await showPinsOnMap(beastieBitMap, beastiesToSpawn);
-
-    //setState(() {});
-
+    //return true
     return true;
   }
 
   //Free use icons come from https://game-icons.net/
   //Setting up icon for player
   Future<void> setIcons(List<beastieInfo> beastiesList) async {
-
-    //beastiesList.add(new beastieInfo("Eagle", "easy", "2 + 2", 4, 'assets/eagle-emblem.png'));
-
-    //TO DO: go through list and set up each icon
-    Size imageSize = Size(1, 1);
+    //TO DO - FUTURE: place user icon 
     // sourceIcon = await BitmapDescriptor.fromAssetImage(
     //   ImageConfiguration(size: imageSize),
     //     'assets/plane-pilot.png');
 
+    //loop through beastie list and set images as bitmapdescriptors
     for(var i = 0; i < beastiesList.length; i++) {
-      beastieBitMap.add(await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 1, size: imageSize),
-          'assets/' + beastiesList[i].imageUrl.toString()));
+      beastieBitMap.add(await getBytesFromAsset('assets/'+beastiesList[i].imageUrl, 100));
     }
     
   }
 
+  //Function to create Byte from asset image
+  //function provided by Miguel Ruivo https://stackoverflow.com/questions/53633404/how-to-change-the-icon-size-of-google-maps-marker-in-flutter
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+  }
+
   //setting initial location
   Future<void> setInitialLocation() async {
-    //location = new Location();
-
-    // location.onLocationChanged().listen((LocationData cLoc) async {
-    //     currentLocation = cLoc;
-    //     updatePinOnMap();
-    // });
-
+    //get current location
     currentLocation = await location.getLocation();
+    //set camera position
     initialCameraPosition = CameraPosition(
       zoom: CAMERA_ZOOM,
       tilt: CAMERA_TILT,
@@ -137,9 +135,9 @@ class _MathGoState extends State<MathGo> {
   }
 
   //function to show markers on google maps of beasties and player
-  Future<void> showPinsOnMap(List<BitmapDescriptor> beastieBitMap, List<beastieInfo> beastiesList) {
+  Future<void> showPinsOnMap(List<Uint8List> beastieBitMap, List<beastieInfo> beastiesList) {
+    //TO DO - FUTURE: Show user pin on map
     //var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
-
     //Player marker
     // _markers.add(Marker(
     //   markerId: MarkerId('sourcePin') ,
@@ -148,33 +146,32 @@ class _MathGoState extends State<MathGo> {
     // ));
     //Beastie markers
 
-    //TO DO: go through list and add each marker
+    //Loop through list of beastie bit maps to add markers
     for(var i = 0; i < beastieBitMap.length; i++) {
       var randX = new Random();
       var randY = new Random();
       var posRandX = new Random();
       var posRandY = new Random();
-
+      //random latitude and longitude values
       var randLat = 0.0;
       var randLong = 0.0;
 
-      randLat = (randX.nextInt(5) + 1)*0.001;
-      randLong = (randY.nextInt(5) + 1) *0.001;
-
+      //Set rand lat and long to 0.001 - 0.005 + or - current location
+      randLat = (randX.nextInt(3) + 1)*0.001;
+      randLong = (randY.nextInt(3) + 1) *0.001;
       if (posRandX.nextInt(1) == 0) {
         randLat = randLat * (-1);
       }
-      
       if (posRandY.nextInt(1) == 0) {
         randLong = randLong * (-1);
       }
-
+      //set random position of marker
       var randPosition = LatLng(currentLocation.latitude + randLat, currentLocation.longitude + randLong);
-
+      //add marker to map with on tap that routes to AR Screen
       _markers.add(Marker(
         markerId: MarkerId(i.toString()),
         position: randPosition,
-        icon: beastieBitMap[i],
+        icon: BitmapDescriptor.fromBytes(beastieBitMap[i]),
         onTap: () {
           Navigator.push(
             context,
@@ -187,35 +184,36 @@ class _MathGoState extends State<MathGo> {
     //setState(() {});
   }
 
-  Future<void> updatePinOnMap() async {
-    CameraPosition cPosition = CameraPosition(
-      zoom: CAMERA_ZOOM,
-      tilt: CAMERA_TILT,
-      bearing: CAMERA_BEARING,
-      target: LatLng(currentLocation.latitude, currentLocation.longitude),
-    );
+  //TO DO - FUTURE: updatePinOnMap will animate the camera and move user marker when location changes
+  // Future<void> updatePinOnMap() async {
+  //   CameraPosition cPosition = CameraPosition(
+  //     zoom: CAMERA_ZOOM,
+  //     tilt: CAMERA_TILT,
+  //     bearing: CAMERA_BEARING,
+  //     target: LatLng(currentLocation.latitude, currentLocation.longitude),
+  //   );
 
-    final GoogleMapController controller = await _controller.future;
+  //   final GoogleMapController controller = await _controller.future;
 
-    if(_controller.isCompleted) {
-      controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
-    }
+  //   if(_controller.isCompleted) {
+  //     controller.animateCamera(CameraUpdate.newCameraPosition(cPosition));
+  //   }
 
   //  setState(() {
-      // var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
+  //     var pinPosition = LatLng(currentLocation.latitude, currentLocation.longitude);
 
-      // _markers.removeWhere(
-      //   (m) => m.markerId.value == 'sourcePin');
+  //     _markers.removeWhere(
+  //       (m) => m.markerId.value == 'sourcePin');
 
-      // _markers.add(Marker(
-      //   markerId: MarkerId('sourcePin'),
-      //   position: pinPosition,
-      //   icon: sourceIcon
-      // ));
+  //     _markers.add(Marker(
+  //       markerId: MarkerId('sourcePin'),
+  //       position: pinPosition,
+  //       icon: sourceIcon
+  //     ));
 
   //  });
-    //setState(() {});  
-  }
+  //   setState(() {});  
+  // }
 
    void changePage(int pagePicked) async{
 
@@ -251,9 +249,9 @@ class _MathGoState extends State<MathGo> {
        );
      }
 
-     setState(() {
+     //setState(() {
        pageIndex = pagePicked;
-     });
+     //});
    }
 
   @override
@@ -267,7 +265,7 @@ class _MathGoState extends State<MathGo> {
                     return Scaffold(
                       //app bar 
                       appBar: AppBar(
-                        title: Text('Math GO! Map Screen'),
+                        title: Text('Math Go!'),
                         backgroundColor: Colors.orange
                       ),
                       bottomNavigationBar: BottomNavigationBar(
@@ -310,7 +308,7 @@ class _MathGoState extends State<MathGo> {
               );
             });
   }
-
+//google map widget to implement Google Map plugin
 Widget googleMap(){
     return Container(
         child: GoogleMap(
