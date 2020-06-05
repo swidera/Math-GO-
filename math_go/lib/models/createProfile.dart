@@ -24,9 +24,10 @@ Future<String> createUser (String username, String pw) async{
                 _mathGoStore.collection("users").document(username).collection("myBeasties")
                 .document('De2lxEUNbVbgYmjjHsbp')
                 .setData({
-                 'name': 'Turd'
+                 'name': 'Eagle',
+                 'imageUrl': 'eagle-emblem.png'
                 });
-                createStatus="The user has been created";
+                createStatus="The user has been created. Please enjoy a free Eagle Beastie as an appreciation for playing Math Go!";
               }
   });
 
